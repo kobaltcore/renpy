@@ -1,4 +1,4 @@
-﻿# Copyright 2004-2020 Tom Rothamel <pytom@bishoujo.us>
+# Copyright 2004-2020 Tom Rothamel <pytom@bishoujo.us>
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation files
@@ -414,12 +414,16 @@ screen android:
 
                         frame style "l_indent":
 
-                            has vbox
+                            has hbox
+                            spacing 10
 
                             textbutton _("Logcat"):
                                 action AndroidIfState(state, ANDROID_NO_KEY, Jump("logcat"))
                                 hovered tt.Action(LOGCAT_TEXT)
 
+                            textbutton _("Configure Gradle"):
+                                action AndroidIfState(state, ANDROID_NO_KEY, Jump("gradle_configure"))
+                                hovered tt.Action(LOGCAT_TEXT)
 
                 # Right side.
                 frame:
@@ -507,6 +511,16 @@ label logcat:
         interface.open_editor()
 
     jump android
+
+label gradle_configure:
+
+    python:
+        rapt.configure.configure_gradle(
+            MobileInterface("android", edit=False),
+            os.path.join(rapt.plat.RAPT_PATH, "prototype", "gradle.properties"))
+
+    jump android
+
 
 init python:
 
